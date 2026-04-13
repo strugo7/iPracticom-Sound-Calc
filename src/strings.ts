@@ -184,6 +184,14 @@ export const S = {
         notAvailable: 'לא זמין',
     },
 
+    // ─── עדכוני גרסה ─────────────────────────────────────────────────────────
+    updates: {
+        title: 'גרסה חדשה זמינה',
+        newVersion: 'גרסה {{ver}} זמינה להורדה מ-GitHub',
+        updateNow: 'עדכן עכשיו',
+        remindLater: 'אחר כך',
+    },
+
     // ─── נגישות (accessibilityLabel) ─────────────────────────────────────────
     a11y: {
         removeNodeButton: 'הסר רכיב מהשרשרת',
