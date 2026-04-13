@@ -37,7 +37,8 @@ export const S = {
         errorInvalid: 'ערך לא תקין',
         errorTwoInputsRequired: 'יש להזין שני ערכים לפחות',
 
-        // כפתורי נוסחה
+        // בחירת נוסחה
+        formulaLabel: 'נוסחה:',
         formulaA: 'נוסחה א׳',
         formulaB: 'נוסחה ב׳',
         formulaC: 'נוסחה ג׳',

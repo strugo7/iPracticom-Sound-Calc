@@ -1,16 +1,63 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, I18nManager } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  TextInput,
-  SegmentedButtons,
-  Text,
-  Button,
-} from 'react-native-paper';
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import { Card, TextInput, Text } from 'react-native-paper';
 import { S } from '../../strings';
 import { iPracticomColors, iPracticomSpacing, iPracticomRadius } from '../../theme';
 import { OhmEngine } from '../../engine/ohm';
 import { useCalculatorStore, CalculatorVariable } from '../../store/calcStore';
+
+// ────────────────────────────────────────────────────────────────────────────
+// סוגי קלט אפשריים לכל נוסחה
+type InputVar = 'P' | 'V' | 'I' | 'R';
+
+interface FormulaDefinition {
+  label: string;       // תצוגה מתמטית (ASCII)
+  inputA: InputVar;
+  inputB: InputVar;
+  calc: (a: number, b: number) => number;
+}
+
+// מידע תצוגה לכל משתנה
+const UNIT_INFO: Record<InputVar, { symbol: string; name: string }> = {
+  P: { symbol: 'W', name: 'הספק' },
+  V: { symbol: 'V', name: 'מתח' },
+  I: { symbol: 'A', name: 'זרם' },
+  R: { symbol: 'Ω', name: 'התנגד׳' },
+};
+
+// 12 הנוסחאות — 3 לכל משתנה יעד
+const FORMULAS: Record<CalculatorVariable, FormulaDefinition[]> = {
+  P: [
+    { label: 'V × I',   inputA: 'V', inputB: 'I', calc: OhmEngine.P_from_VI },
+    { label: 'V² ÷ R',  inputA: 'V', inputB: 'R', calc: OhmEngine.P_from_V2R },
+    { label: 'I² × R',  inputA: 'I', inputB: 'R', calc: OhmEngine.P_from_I2R },
+  ],
+  V: [
+    { label: 'I × R',   inputA: 'I', inputB: 'R', calc: OhmEngine.V_from_IR },
+    { label: 'P ÷ I',   inputA: 'P', inputB: 'I', calc: OhmEngine.V_from_PI },
+    { label: '√(P×R)',  inputA: 'P', inputB: 'R', calc: OhmEngine.V_from_PR },
+  ],
+  I: [
+    { label: 'V ÷ R',   inputA: 'V', inputB: 'R', calc: OhmEngine.I_from_VR },
+    { label: 'P ÷ V',   inputA: 'P', inputB: 'V', calc: OhmEngine.I_from_PV },
+    { label: '√(P÷R)',  inputA: 'P', inputB: 'R', calc: OhmEngine.I_from_PR },
+  ],
+  R: [
+    { label: 'V ÷ I',   inputA: 'V', inputB: 'I', calc: OhmEngine.R_from_VI },
+    { label: 'V² ÷ P',  inputA: 'V', inputB: 'P', calc: OhmEngine.R_from_V2P },
+    { label: 'P ÷ I²',  inputA: 'P', inputB: 'I', calc: OhmEngine.R_from_PI2 },
+  ],
+};
+
+// סדר כפתורי המשתנים — הסדר הזה נקבע ב-RTL (ימין לשמאל: P, V, I, R)
+const VARIABLE_ORDER: CalculatorVariable[] = ['P', 'V', 'I', 'R'];
+
+// ────────────────────────────────────────────────────────────────────────────
 
 export default function FormulaCard() {
   const {
@@ -25,198 +72,280 @@ export default function FormulaCard() {
     reset,
   } = useCalculatorStore();
 
-  // חישוב אוטומטי בעת שינוי קלטים או משתנה היעד
-  useEffect(() => {
-    calculateResult();
-  }, [input1, input2, targetVariable]);
+  const [formulaIndex, setFormulaIndex] = useState(0);
 
-  const calculateResult = () => {
-    // אם אחד מהקלטים חסר, אין לחשב
-    if (input1 === null || input2 === null || input1 === 0 || input2 === 0) {
+  const currentFormulas = FORMULAS[targetVariable];
+  const currentFormula = currentFormulas[formulaIndex];
+
+  // חישוב אוטומטי בכל שינוי
+  useEffect(() => {
+    runCalc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input1, input2, targetVariable, formulaIndex]);
+
+  const runCalc = () => {
+    if (
+      input1 === null ||
+      input2 === null ||
+      input1 === 0 ||
+      input2 === 0
+    ) {
       setResult(null);
       return;
     }
+    const val = currentFormula.calc(input1, input2);
+    setResult(isFinite(val) ? val : null);
+  };
 
-    let calculated: number | null = null;
+  const handleVariableChange = (variable: CalculatorVariable) => {
+    setTargetVariable(variable);
+    setFormulaIndex(0);
+    setInput1(null);
+    setInput2(null);
+    setResult(null);
+  };
 
-    // בחר נוסחה לפי המשתנה הנדרש והקלטים הזמינים
-    if (targetVariable === 'P') {
-      // ניסיון לחשב Watts (Power)
-      // P = V×I, P = V²/R, P = I²×R
-      // בדוק האם יש לנו את הקלטים הנדרשים
-      if (input1 && input2) {
-        // נסה כל נוסחה
-        calculated = OhmEngine.P_from_VI(input1, input2);
-        if (calculated === null) {
-          calculated = OhmEngine.P_from_V2R(input1, input2);
-        }
-        if (calculated === null) {
-          calculated = OhmEngine.P_from_I2R(input1, input2);
-        }
-      }
-    } else if (targetVariable === 'V') {
-      // ניסיון לחשב Volts (Voltage)
-      // V = I×R, V = P/I, V = √(P×R)
-      if (input1 && input2) {
-        calculated = OhmEngine.V_from_IR(input1, input2);
-        if (calculated === null) {
-          calculated = OhmEngine.V_from_PI(input1, input2);
-        }
-        if (calculated === null) {
-          calculated = OhmEngine.V_from_PR(input1, input2);
-        }
-      }
-    } else if (targetVariable === 'I') {
-      // ניסיון לחשב Amps (Current)
-      // I = V/R, I = P/V, I = √(P/R)
-      if (input1 && input2) {
-        calculated = OhmEngine.I_from_VR(input1, input2);
-        if (calculated === null) {
-          calculated = OhmEngine.I_from_PV(input1, input2);
-        }
-        if (calculated === null) {
-          calculated = OhmEngine.I_from_PR(input1, input2);
-        }
-      }
-    } else if (targetVariable === 'R') {
-      // ניסיון לחשב Ohms (Resistance)
-      // R = V/I, R = V²/P, R = P/I²
-      if (input1 && input2) {
-        calculated = OhmEngine.R_from_VI(input1, input2);
-        if (calculated === null) {
-          calculated = OhmEngine.R_from_V2P(input1, input2);
-        }
-        if (calculated === null) {
-          calculated = OhmEngine.R_from_PI2(input1, input2);
-        }
-      }
-    }
-
-    setResult(calculated);
+  const handleFormulaChange = (idx: number) => {
+    setFormulaIndex(idx);
+    setInput1(null);
+    setInput2(null);
+    setResult(null);
   };
 
   const formatResult = (): string => {
     if (result === null || result === undefined) {
       return S.calculator.resultEmpty;
     }
-    // עגול לשלוש ספרות עשרוניות
     return result.toFixed(3);
   };
 
-  const getResultUnit = (): string => {
-    switch (targetVariable) {
-      case 'P':
-        return S.calculator.unitWatts;
-      case 'V':
-        return S.calculator.unitVolts;
-      case 'I':
-        return S.calculator.unitAmps;
-      case 'R':
-        return S.calculator.unitOhms;
-      default:
-        return '';
-    }
-  };
-
-  const handleVariableChange = (value: string) => {
-    setTargetVariable(value as CalculatorVariable);
-  };
-
+  // ──────────────────────────────────────────────────────────────────────────
   return (
-    <View style={styles.container}>
-      {/* בחירת משתנה היעד */}
-      <Text variant="titleMedium" style={styles.label}>
-        {S.calculator.solveFor}
-      </Text>
-      <SegmentedButtons
-        value={targetVariable}
-        onValueChange={handleVariableChange}
-        buttons={[
-          { value: 'P', label: 'W\nהספק', accessibilityLabel: 'Power' },
-          { value: 'V', label: 'V\nמתח', accessibilityLabel: 'Voltage' },
-          { value: 'I', label: 'A\nזרם', accessibilityLabel: 'Current' },
-          { value: 'R', label: 'Ω\nהתנגד׳', accessibilityLabel: 'Resistance' },
-        ]}
-        style={styles.segmentedButtons}
-      />
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
+      {/* ── בחירת משתנה יעד ──────────────────────────────────────────────── */}
+      <Text style={styles.sectionLabel}>{S.calculator.solveFor}</Text>
 
-      {/* קלטי הערכים הידועים */}
+      <View style={styles.varRow}>
+        {VARIABLE_ORDER.map((variable) => {
+          const info = UNIT_INFO[variable];
+          const isActive = targetVariable === variable;
+          return (
+            <TouchableOpacity
+              key={variable}
+              style={[styles.varButton, isActive && styles.varButtonActive]}
+              onPress={() => handleVariableChange(variable)}
+              activeOpacity={0.75}
+            >
+              <Text
+                style={[
+                  styles.varButtonSymbol,
+                  isActive && styles.varButtonSymbolActive,
+                ]}
+              >
+                {info.symbol}
+              </Text>
+              <Text
+                style={[
+                  styles.varButtonName,
+                  isActive && styles.varButtonNameActive,
+                ]}
+              >
+                {info.name}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
+      {/* ── בחירת נוסחה (3 אפשרויות לכל משתנה) ─────────────────────────── */}
+      <Text style={styles.sectionLabel}>{S.calculator.formulaLabel}</Text>
+
+      <View style={styles.formulaRow}>
+        {currentFormulas.map((formula, idx) => {
+          const isActive = formulaIndex === idx;
+          return (
+            <TouchableOpacity
+              key={idx}
+              style={[
+                styles.formulaButton,
+                isActive && styles.formulaButtonActive,
+              ]}
+              onPress={() => handleFormulaChange(idx)}
+              activeOpacity={0.75}
+            >
+              <Text
+                style={[
+                  styles.formulaButtonText,
+                  isActive && styles.formulaButtonTextActive,
+                ]}
+              >
+                {formula.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
+      {/* ── קלטים מסומנים לפי הנוסחה שנבחרה ────────────────────────────── */}
       <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.inputsContainer}>
-            <TextInput
-              label={`${S.calculator.inputPlaceholder} 1`}
-              value={input1 ? input1.toString() : ''}
-              onChangeText={(text) => {
-                const num = text === '' ? null : parseFloat(text);
-                setInput1(isNaN(num as number) ? null : num);
-              }}
-              keyboardType="decimal-pad"
-              textAlign={I18nManager.isRTL ? 'right' : 'left'}
-              style={[styles.input, { textAlign: 'right' }]}
-              placeholder={S.calculator.inputPlaceholder}
-            />
-
-            <TextInput
-              label={`${S.calculator.inputPlaceholder} 2`}
-              value={input2 ? input2.toString() : ''}
-              onChangeText={(text) => {
-                const num = text === '' ? null : parseFloat(text);
-                setInput2(isNaN(num as number) ? null : num);
-              }}
-              keyboardType="decimal-pad"
-              textAlign={I18nManager.isRTL ? 'right' : 'left'}
-              style={[styles.input, { textAlign: 'right' }]}
-              placeholder={S.calculator.inputPlaceholder}
-            />
-          </View>
+        <Card.Content style={styles.inputsContainer}>
+          <TextInput
+            label={`${UNIT_INFO[currentFormula.inputA].name} (${UNIT_INFO[currentFormula.inputA].symbol})`}
+            value={input1 !== null ? input1.toString() : ''}
+            onChangeText={(text) => {
+              const num = text === '' ? null : parseFloat(text);
+              setInput1(num === null || isNaN(num) ? null : num);
+            }}
+            keyboardType="decimal-pad"
+            style={styles.input}
+            contentStyle={styles.inputContent}
+            mode="outlined"
+          />
+          <TextInput
+            label={`${UNIT_INFO[currentFormula.inputB].name} (${UNIT_INFO[currentFormula.inputB].symbol})`}
+            value={input2 !== null ? input2.toString() : ''}
+            onChangeText={(text) => {
+              const num = text === '' ? null : parseFloat(text);
+              setInput2(num === null || isNaN(num) ? null : num);
+            }}
+            keyboardType="decimal-pad"
+            style={styles.input}
+            contentStyle={styles.inputContent}
+            mode="outlined"
+          />
         </Card.Content>
       </Card>
 
-      {/* תוצאה */}
+      {/* ── תוצאה ────────────────────────────────────────────────────────── */}
       <Card style={[styles.card, styles.resultCard]}>
         <Card.Content>
           <Text style={styles.resultLabel}>{S.calculator.resultLabel}</Text>
           <View style={styles.resultRow}>
+            {/* ביחידה ביחידה: ערך מימין, יחידה משמאל (RTL) */}
+            <Text style={styles.resultUnit}>
+              {UNIT_INFO[targetVariable].symbol}
+            </Text>
             <Text style={styles.resultValue}>{formatResult()}</Text>
-            <Text style={styles.resultUnit}>{getResultUnit()}</Text>
           </View>
         </Card.Content>
       </Card>
 
-      {/* כפתור נקיון */}
-      <Button
-        mode="outlined"
-        onPress={reset}
+      {/* ── נקה ──────────────────────────────────────────────────────────── */}
+      <TouchableOpacity
         style={styles.clearButton}
-        textColor={iPracticomColors.electricBlue}
+        onPress={() => {
+          reset();
+          setFormulaIndex(0);
+        }}
+        activeOpacity={0.75}
       >
-        {S.calculator.clearButton}
-      </Button>
-    </View>
+        <Text style={styles.clearButtonText}>{S.calculator.clearButton}</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
+// ────────────────────────────────────────────────────────────────────────────
+
 const styles = StyleSheet.create({
-  container: {
+  scroll: {
     flex: 1,
-    padding: iPracticomSpacing.lg,
-    backgroundColor: iPracticomColors.lightBG,
   },
-  label: {
-    fontSize: 16,
+  container: {
+    padding: iPracticomSpacing.lg,
+    paddingBottom: iPracticomSpacing.xxl,
+  },
+
+  // ── תוויות קטע ─────────────────────────────────────────────────────────
+  sectionLabel: {
+    fontSize: 15,
     fontWeight: '600',
     color: iPracticomColors.darkNavy,
-    marginBottom: iPracticomSpacing.sm,
     textAlign: 'right',
+    marginBottom: iPracticomSpacing.sm,
   },
-  segmentedButtons: {
+
+  // ── שורת משתנים (P/V/I/R) ──────────────────────────────────────────────
+  varRow: {
+    flexDirection: 'row',
+    gap: iPracticomSpacing.sm,
     marginBottom: iPracticomSpacing.lg,
   },
+  varButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: iPracticomSpacing.sm + 2,
+    borderRadius: iPracticomRadius.button,
+    borderWidth: 1.5,
+    borderColor: iPracticomColors.midGray,
+    backgroundColor: iPracticomColors.white,
+    minHeight: 56,
+  },
+  varButtonActive: {
+    backgroundColor: iPracticomColors.electricBlue,
+    borderColor: iPracticomColors.electricBlue,
+  },
+  varButtonSymbol: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: iPracticomColors.darkNavy,
+    lineHeight: 24,
+  },
+  varButtonSymbolActive: {
+    color: iPracticomColors.white,
+  },
+  varButtonName: {
+    fontSize: 11,
+    color: iPracticomColors.midGray,
+    lineHeight: 15,
+  },
+  varButtonNameActive: {
+    color: iPracticomColors.white,
+  },
+
+  // ── שורת נוסחאות (3 אפשרויות) ──────────────────────────────────────────
+  formulaRow: {
+    flexDirection: 'row',
+    gap: iPracticomSpacing.sm,
+    marginBottom: iPracticomSpacing.lg,
+  },
+  formulaButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: iPracticomSpacing.sm,
+    paddingHorizontal: iPracticomSpacing.xs,
+    borderRadius: iPracticomRadius.button,
+    borderWidth: 1.5,
+    borderColor: iPracticomColors.skyBlue,
+    backgroundColor: iPracticomColors.white,
+    minHeight: 44,
+  },
+  formulaButtonActive: {
+    backgroundColor: iPracticomColors.skyBlue,
+    borderColor: iPracticomColors.skyBlue,
+  },
+  formulaButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: iPracticomColors.electricBlue,
+    textAlign: 'center',
+  },
+  formulaButtonTextActive: {
+    color: iPracticomColors.white,
+  },
+
+  // ── כרטיס קלטים ────────────────────────────────────────────────────────
   card: {
     marginBottom: iPracticomSpacing.lg,
     borderRadius: iPracticomRadius.card,
     elevation: 2,
+    backgroundColor: iPracticomColors.white,
   },
   inputsContainer: {
     gap: iPracticomSpacing.md,
@@ -224,35 +353,51 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: iPracticomColors.white,
   },
-  resultCard: {
-    backgroundColor: iPracticomColors.white,
-    borderLeftColor: iPracticomColors.electricBlue,
-    borderLeftWidth: 4,
-  },
-  resultLabel: {
-    fontSize: 14,
-    color: iPracticomColors.midGray,
-    marginBottom: iPracticomSpacing.xs,
+  inputContent: {
     textAlign: 'right',
   },
+
+  // ── כרטיס תוצאה ─────────────────────────────────────────────────────────
+  resultCard: {
+    borderStartColor: iPracticomColors.electricBlue,
+    borderStartWidth: 4,
+  },
+  resultLabel: {
+    fontSize: 13,
+    color: iPracticomColors.midGray,
+    textAlign: 'right',
+    marginBottom: iPracticomSpacing.xs,
+  },
   resultRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'baseline',
     justifyContent: 'flex-end',
     gap: iPracticomSpacing.sm,
   },
   resultValue: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: '700',
     color: iPracticomColors.electricBlue,
   },
   resultUnit: {
-    fontSize: 18,
+    fontSize: 20,
     color: iPracticomColors.midGray,
     fontWeight: '600',
   },
+
+  // ── כפתור נקה ───────────────────────────────────────────────────────────
   clearButton: {
-    marginTop: iPracticomSpacing.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: iPracticomSpacing.md,
+    borderRadius: iPracticomRadius.button,
+    borderWidth: 1.5,
     borderColor: iPracticomColors.electricBlue,
+    backgroundColor: iPracticomColors.white,
+  },
+  clearButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: iPracticomColors.electricBlue,
   },
 });
