@@ -4,6 +4,30 @@ All notable changes and progress updates to the iPracticom Sound Calc project wi
 
 ---
 
+## [1.0.2] — 2026-04-13
+
+### 🐛 Bug Fixes — Calculator Screen
+
+#### חישובי
+- [x] **תיקון קריטי: הקלדת מספרים עשרוניים** — `value={input1.toString()}` הרגה את הנקודה העשרונית בזמן הקלדה ("1." → "1"). נוסף state מקומי `text1`/`text2` לטקסט הגולמי, נפרד מהערך הנומרי בסטור
+- [x] **תיקון לוקליזציה עברית** — מכשירים עם לוקאל עברי משתמשים ב-`","` כמפריד עשרוני. נוסף `text.replace(',', '.')` לפני `parseFloat`
+
+#### UX/UI — בחירת מדד חישוב (אמפר / וולט / הספק / הואם)
+- [x] **תיקון ניגוד צבע** — כפתורי נוסחה פעילים שינו רקע מ-`skyBlue` (#2EB4FF) ל-`electricBlue` (#0075DB): יחס ניגוד עלה מ-2.5:1 ל-~5:1 (WCAG AA ✅)
+- [x] **יישור RTL** — נוסף `textAlign: 'center'` לטקסט הסמלים (W/V/A/Ω) ושמות ('הספק' וכו׳) בתוך כפתורי המדד
+- [x] **מניעת גלישת טקסט** — נוסף `numberOfLines={1}` לכל תוויות הכפתורים
+- [x] **כפתורי נוסחה** — נוסף `adjustsFontSizeToFit` למניעת קיצוץ בפריסה צפופה
+
+### ✨ Feature — GitHub Releases Update Checker
+
+- [x] **`src/utils/checkVersion.ts`** — בודק מול GitHub Releases API (`/repos/strugo7/iPracticom-Sound-Calc/releases/latest`) בהפעלת האפליקציה; משווה tag_name מול `CURRENT_VERSION` בהשוואת semver; כשלים נבלעים בשקט (אין אינטרנט, rate-limit וכו׳)
+- [x] **`src/components/UpdateDialog/index.tsx`** — Dialog (react-native-paper Portal) המוצג כשיש גרסה חדשה: "עדכן עכשיו" פותח את דף ה-release ב-GitHub דרך `Linking.openURL`, "אחר כך" סוגר
+- [x] **`App.tsx`** — `useEffect` שרץ פעם אחת בהפעלה; מציג `<UpdateDialog>` אם `hasUpdate === true`
+- [x] **`src/strings.ts`** — נוסף קטע `updates` עם מחרוזות עבריות (`title`, `newVersion`, `updateNow`, `remindLater`)
+- [x] אין תלויות npm חדשות — משתמש ב-`fetch` מובנה, `Linking`, ו-react-native-paper הקיים
+
+---
+
 ## [1.0.0] — 2026-04-13
 
 ### 🎉 Completed
@@ -133,6 +157,7 @@ All phases complete! 🎉
 | Phase 5 — Validation & StatusBadge | ✅ Complete | 100% |
 | Phase 6 — Catalog Screen | ✅ Complete | 100% |
 | Phase 7 — APK Build | ✅ Complete | 100% |
+| Phase 8 — Bug Fixes & Update Checker | ✅ Complete | 100% |
 | **Overall** | **✅ Complete** | **100%** |
 
 ---
@@ -157,5 +182,5 @@ All phases complete! 🎉
 ---
 
 **Last Updated:** 2026-04-13  
-**Next Review:** After Phase 7 completion
+**Next Review:** As needed
 
