@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   Dimensions,
+  Image,
 } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +19,7 @@ import {
 } from '../../store/catalogStore';
 import { Player, Mixer, Matrix, Amplifier, Speaker } from '../../types/catalog';
 import { S } from '../../strings';
+import { getProductImage } from '../../utils/productImages';
 
 // ─── גיליון פרטי מוצר — bottom sheet style ──────────────────────────────────
 
@@ -138,6 +140,7 @@ export function ProductDetailSheet({ visible, product, category, onDismiss }: Pr
 
   const specRows = getSpecRows(product, category);
   const icon = CATEGORY_ICONS[category] || 'cube-outline';
+  const imageSource = getProductImage(product.id);
 
   const handleDismiss = () => {
     Animated.timing(slideAnim, {
@@ -160,11 +163,24 @@ export function ProductDetailSheet({ visible, product, category, onDismiss }: Pr
         {/* ידית */}
         <View style={styles.handleBar} />
 
+        {/* תמונה hero — מוצגת רק אם קיימת */}
+        {imageSource && (
+          <View style={styles.heroContainer}>
+            <Image
+              source={imageSource}
+              style={styles.heroImage}
+              resizeMode="contain"
+            />
+          </View>
+        )}
+
         {/* כותרת */}
         <View style={styles.headerRow}>
-          <View style={styles.headerIconCircle}>
-            <MaterialCommunityIcons name={icon} size={26} color={iPracticomColors.electricBlue} />
-          </View>
+          {!imageSource && (
+            <View style={styles.headerIconCircle}>
+              <MaterialCommunityIcons name={icon} size={26} color={iPracticomColors.electricBlue} />
+            </View>
+          )}
           <View style={styles.headerText}>
             <Text style={styles.productName} numberOfLines={2}>{product.name}</Text>
             <Text style={styles.productManufacturer}>{product.manufacturer}</Text>
@@ -304,5 +320,19 @@ const styles = StyleSheet.create({
   closeLabel: {
     fontSize: 15,
     fontWeight: '600',
+  },
+  heroContainer: {
+    width: '100%',
+    height: 180,
+    backgroundColor: iPracticomColors.lightBG,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: iPracticomColors.midGray + '15',
+    marginBottom: iPracticomSpacing.md,
+  },
+  heroImage: {
+    width: '80%',
+    height: 160,
   },
 });

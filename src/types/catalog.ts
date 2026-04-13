@@ -3,6 +3,7 @@ export interface Player {
   name: string;
   model: string;
   manufacturer: string;
+  image?: string;
   outputType: "RCA" | "XLR" | "RCA+XLR";
   outputVoltage: number;
   outputNote?: string;
@@ -17,6 +18,7 @@ export interface Mixer {
   name: string;
   model: string;
   manufacturer: string;
+  image?: string;
   inputCount: number;
   outputCount: number;
   gainStages: number;
@@ -27,6 +29,7 @@ export interface Matrix {
   name: string;
   model: string;
   manufacturer: string;
+  image?: string;
   inputs: number;
   outputs: number;
   routingMatrix: boolean[][];
@@ -47,6 +50,7 @@ export interface Amplifier {
   name: string;
   model: string;
   manufacturer: string;
+  image?: string;
   channels: number;
   powerPerChannel: number;
   minImpedance: number;
@@ -62,6 +66,7 @@ export interface Speaker {
   name: string;
   model: string;
   manufacturer: string;
+  image?: string;
   powerRating: number;
   impedance: number;
   hasLineTransformer: boolean;

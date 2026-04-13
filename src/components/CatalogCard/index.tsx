@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
+import { View, StyleSheet, Animated, Easing, Image } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { iPracticomColors, iPracticomSpacing, iPracticomRadius } from '../../theme';
 import { AnyProduct, CategoryKey } from '../../store/catalogStore';
 import { S } from '../../strings';
+import { getProductImage } from '../../utils/productImages';
 
 // ─── קומפוננטת כרטיס מוצר בקטלוג ───────────────────────────────────────────
 
@@ -72,6 +73,7 @@ export function CatalogCard({ product, category, onPress }: CatalogCardProps) {
 
   const icon = CATEGORY_ICONS[category] || 'cube-outline';
   const subtitle = getSubtitle(product, category);
+  const imageSource = getProductImage(product.id);
 
   return (
     <Animated.View style={[styles.cardOuter, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
@@ -100,13 +102,21 @@ export function CatalogCard({ product, category, onPress }: CatalogCardProps) {
             </Text>
           </View>
 
-          {/* אייקון קטגוריה */}
+          {/* תמונה או אייקון קטגוריה */}
           <View style={styles.iconCircle}>
-            <MaterialCommunityIcons
-              name={icon}
-              size={20}
-              color={iPracticomColors.electricBlue}
-            />
+            {imageSource ? (
+              <Image
+                source={imageSource}
+                style={styles.thumbnail}
+                resizeMode="contain"
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name={icon}
+                size={20}
+                color={iPracticomColors.electricBlue}
+              />
+            )}
           </View>
         </View>
       </TouchableRipple>
@@ -154,9 +164,15 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 38,
     height: 38,
-    borderRadius: 19,
+    borderRadius: 8,
     backgroundColor: iPracticomColors.electricBlue + '12',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  thumbnail: {
+    width: 38,
+    height: 38,
+    borderRadius: 8,
   },
 });
