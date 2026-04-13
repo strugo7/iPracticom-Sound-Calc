@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -74,16 +74,31 @@ export default function FormulaCard() {
 
   const [formulaIndex, setFormulaIndex] = useState(0);
 
+  // טקסט גולמי של השדות — מאפשר הקלדת מספרים עשרוניים בלי שהנקודה תיאכל
+  const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
+
   const currentFormulas = FORMULAS[targetVariable];
   const currentFormula = currentFormulas[formulaIndex];
 
+  // ממיר טקסט קלט למספר — מטפל גם בפסיק כמפריד עשרוני (לוקאל עברי)
+  const parseInput = (text: string): number | null => {
+    if (text === '') return null;
+    const normalized = text.replace(',', '.');
+    const num = parseFloat(normalized);
+    return isNaN(num) || !isFinite(num) ? null : num;
+  };
+
+  const clearInputs = useCallback(() => {
+    setInput1(null);
+    setInput2(null);
+    setResult(null);
+    setText1('');
+    setText2('');
+  }, [setInput1, setInput2, setResult]);
+
   // חישוב אוטומטי בכל שינוי
   useEffect(() => {
-    runCalc();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input1, input2, targetVariable, formulaIndex]);
-
-  const runCalc = () => {
     if (
       input1 === null ||
       input2 === null ||
@@ -95,21 +110,18 @@ export default function FormulaCard() {
     }
     const val = currentFormula.calc(input1, input2);
     setResult(isFinite(val) ? val : null);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input1, input2, targetVariable, formulaIndex]);
 
   const handleVariableChange = (variable: CalculatorVariable) => {
     setTargetVariable(variable);
     setFormulaIndex(0);
-    setInput1(null);
-    setInput2(null);
-    setResult(null);
+    clearInputs();
   };
 
   const handleFormulaChange = (idx: number) => {
     setFormulaIndex(idx);
-    setInput1(null);
-    setInput2(null);
-    setResult(null);
+    clearInputs();
   };
 
   const formatResult = (): string => {
@@ -145,6 +157,7 @@ export default function FormulaCard() {
                   styles.varButtonSymbol,
                   isActive && styles.varButtonSymbolActive,
                 ]}
+                numberOfLines={1}
               >
                 {info.symbol}
               </Text>
@@ -153,6 +166,7 @@ export default function FormulaCard() {
                   styles.varButtonName,
                   isActive && styles.varButtonNameActive,
                 ]}
+                numberOfLines={1}
               >
                 {info.name}
               </Text>
@@ -182,6 +196,8 @@ export default function FormulaCard() {
                   styles.formulaButtonText,
                   isActive && styles.formulaButtonTextActive,
                 ]}
+                numberOfLines={1}
+                adjustsFontSizeToFit
               >
                 {formula.label}
               </Text>
@@ -195,10 +211,10 @@ export default function FormulaCard() {
         <Card.Content style={styles.inputsContainer}>
           <TextInput
             label={`${UNIT_INFO[currentFormula.inputA].name} (${UNIT_INFO[currentFormula.inputA].symbol})`}
-            value={input1 !== null ? input1.toString() : ''}
+            value={text1}
             onChangeText={(text) => {
-              const num = text === '' ? null : parseFloat(text);
-              setInput1(num === null || isNaN(num) ? null : num);
+              setText1(text);
+              setInput1(parseInput(text));
             }}
             keyboardType="decimal-pad"
             style={styles.input}
@@ -207,10 +223,10 @@ export default function FormulaCard() {
           />
           <TextInput
             label={`${UNIT_INFO[currentFormula.inputB].name} (${UNIT_INFO[currentFormula.inputB].symbol})`}
-            value={input2 !== null ? input2.toString() : ''}
+            value={text2}
             onChangeText={(text) => {
-              const num = text === '' ? null : parseFloat(text);
-              setInput2(num === null || isNaN(num) ? null : num);
+              setText2(text);
+              setInput2(parseInput(text));
             }}
             keyboardType="decimal-pad"
             style={styles.input}
@@ -240,6 +256,8 @@ export default function FormulaCard() {
         onPress={() => {
           reset();
           setFormulaIndex(0);
+          setText1('');
+          setText2('');
         }}
         activeOpacity={0.75}
       >
@@ -295,6 +313,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: iPracticomColors.darkNavy,
     lineHeight: 24,
+    textAlign: 'center',
   },
   varButtonSymbolActive: {
     color: iPracticomColors.white,
@@ -303,6 +322,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: iPracticomColors.midGray,
     lineHeight: 15,
+    textAlign: 'center',
   },
   varButtonNameActive: {
     color: iPracticomColors.white,
@@ -327,8 +347,8 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   formulaButtonActive: {
-    backgroundColor: iPracticomColors.skyBlue,
-    borderColor: iPracticomColors.skyBlue,
+    backgroundColor: iPracticomColors.electricBlue,
+    borderColor: iPracticomColors.electricBlue,
   },
   formulaButtonText: {
     fontSize: 13,
