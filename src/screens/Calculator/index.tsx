@@ -1,14 +1,21 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import { S } from '../../strings';
 import { iPracticomColors } from '../../theme';
+import FormulaCard from '../../components/FormulaCard';
 
 export default function CalculatorScreen() {
   return (
-    <View style={styles.container}>
-      <Text variant="titleLarge">{S.calculator.screenTitle}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Appbar.Header style={styles.header}>
+        <Appbar.Content
+          title={S.calculator.screenTitle}
+          titleStyle={styles.headerTitle}
+        />
+      </Appbar.Header>
+      <FormulaCard />
+    </SafeAreaView>
   );
 }
 
@@ -16,7 +23,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: iPracticomColors.lightBG,
-    alignItems: 'flex-end',
-    padding: 16,
+  },
+  header: {
+    backgroundColor: iPracticomColors.white,
+    elevation: 2,
+  },
+  headerTitle: {
+    textAlign: 'right',
+    color: iPracticomColors.darkNavy,
+    fontSize: 20,
+    fontWeight: '600',
   },
 });

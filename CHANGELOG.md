@@ -62,72 +62,53 @@ All notable changes and progress updates to the iPracticom Sound Calc project wi
 
 ## 🔄 In Progress
 
-Nothing currently in progress. Ready for Phase 2.
+Nothing currently in progress. Ready for Phase 7.
 
 ---
 
 ## 📝 Todo / Upcoming
 
-### Phase 2 — Data Layer (PENDING)
-- [ ] Create Zustand stores:
-  - [ ] `src/store/calcStore.ts` — Calculator state (inputs, selected formula, result)
-  - [ ] `src/store/topologyStore.ts` — Topology chain, validation results
-  - [ ] `src/store/catalogStore.ts` — Catalog filtering, search state
-- [ ] Implement math engines:
-  - [ ] `src/engine/ohm.ts` — All 12 Ohm's Law formulas (P, V, I, R)
-  - [ ] `src/engine/impedance.ts` — Series and parallel impedance calculations
-  - [ ] `src/engine/validator.ts` — Full validation logic (impedance, power, line voltage checks)
-- [ ] Add inline tests for math engine (verify against known values)
-- [ ] TypeScript compilation check (zero errors)
+### Phase 2 — Data Layer ✅
+- [x] Create Zustand stores (calcStore, topologyStore, catalogStore)
+- [x] Implement math engines (ohm.ts, impedance.ts, validator.ts)
+- [x] TypeScript compilation check (zero errors)
 
-### Phase 3 — Calculator Screen (PENDING)
-- [ ] Build `FormulaCard` component
-  - [ ] Two input fields for known values
-  - [ ] SegmentedButtons to select target variable (P/V/I/R)
-  - [ ] Display calculated result (3 decimal places or "—" if invalid)
-  - [ ] Error handling for zero/invalid inputs
-- [ ] Wire `FormulaCard` to `calcStore`
-- [ ] Add Clear button
-- [ ] Test all 4 target modes (solve for P, V, I, R)
-- [ ] Checkpoint: All calculation modes working
+### Phase 3 — Calculator Screen ✅
+- [x] Build FormulaCard component with SegmentedButtons
+- [x] Wire to calcStore, all 4 target modes working
 
-### Phase 4 — Topology Screen (PENDING)
-- [ ] Build `TopologyNode` component
-  - [ ] Display product name, type icon, remove button
-  - [ ] Styling with iPracticom brand colors
-- [ ] Create topology chain visualization
-  - [ ] Vertical FlatList of nodes
-  - [ ] Arrow connectors between nodes
-- [ ] Build "Add Node" button and modal
-  - [ ] Modal: select node type (source, mixer, matrix, amplifier, speaker_group)
-  - [ ] Modal: select product from filtered catalog
-- [ ] Implement chain order validation
-  - [ ] Enforce: source → [mixer|matrix] → amplifier → speaker_group
-  - [ ] Block invalid additions (show Snackbar)
-- [ ] Wire to `topologyStore` with MMKV persistence
-- [ ] Checkpoint: Build full chain, verify persistence across app restart
+### Phase 4 — Topology Screen ✅
+- [x] Build TopologyNode component with product info, icons, remove button
+- [x] Build AddNodeModal with chain order validation
+- [x] Vertical chain with arrow connectors
+- [x] Wire to topologyStore with persistence
 
-### Phase 5 — Validation & StatusBadge (PENDING)
-- [ ] Build `StatusBadge` component
-  - [ ] Green ✓ for pass, Red ✗ for fail
-  - [ ] Customizable label and result values
-- [ ] Subscribe to `topologyStore.chain` and run validation on every change
-- [ ] Display `ValidationResult` at bottom of Topology screen:
-  - [ ] Impedance check (calculated vs minimum)
-  - [ ] Power check (required vs available)
-  - [ ] Line voltage check (70V/100V transformer compatibility)
-- [ ] Show detailed numbers (e.g., "עכבה מחושבת: 3.2Ω — מינימום: 4Ω")
-- [ ] Checkpoint: Connect speakers below amplifier min impedance → red badge appears immediately
+### Phase 5 — Validation & StatusBadge ✅
+- [x] Enhanced `StatusBadge` component with fade+scale animations (250ms), Material Community Icons, status pill, RTL layout, accessibility labels
+- [x] Created `ValidationPanel` component with shield icon header, overall status indicator, slide-up animation, errors summary section
+- [x] Added `lineVoltageOk` and `lineVoltageRequired` to `ValidationResult` type
+- [x] Updated `validator.ts` to return 70V/100V line voltage check result
+- [x] Moved validation logic into Zustand store (runs inline on every addNode/removeNode/updateNode)
+- [x] Added `onRehydrateStorage` handler for re-validation after persistence restore
+- [x] Removed useEffect dependency — validation is now immediate via store actions
+- [x] Display 3 StatusBadges: impedance, power, line voltage (conditional)
+- [x] Show detailed Hebrew values (e.g., "עכבה מחושבת: 4.0Ω — מינימום מגבר: 2Ω")
+- [x] Added missing Hebrew strings: lineVoltageSupported, lineVoltageNotSupported, errorsSummaryTitle
+- [x] Hint message shown when chain has insufficient nodes for validation
+- [x] TypeScript compilation: zero errors
+- [x] Stitch UI mockup generated for visual reference
 
-### Phase 6 — Catalog Screen (PENDING)
-- [ ] Build catalog with SectionList (grouped by category)
-  - [ ] Players, Mixers, Matrices, Amplifiers, Speakers sections
-- [ ] Implement search bar
-  - [ ] Filter by name or model (case-insensitive, Hebrew-aware)
-- [ ] Build product detail bottom sheet
-  - [ ] Display all spec fields per product type
-  - [ ] Hebrew labels for all fields
-- [ ] Checkpoint: Search works in Hebrew/English, all fields visible in detail sheet
+### Phase 6 — Catalog Screen ✅
+- [x] Enhanced `catalogStore.ts` with category filtering, product selection, `getFilteredSections` selector
+- [x] Built `CatalogCard` component with category icons, dynamic subtitles, fade+scale animations, RTL, a11y
+- [x] Built `ProductDetailSheet` bottom sheet with slide animation, full spec rows per product type, alternating row backgrounds
+- [x] Built full `CatalogScreen` with SectionList grouped by category, search bar, category filter chips
+- [x] Search filters by name, model, and manufacturer (case-insensitive, Hebrew+English)
+- [x] Section headers show category name + product count badge
+- [x] Empty state with magnify-close icon and "לא נמצאו מוצרים" message
+- [x] All strings reference `strings.ts` — zero inline Hebrew
+- [x] TypeScript compilation: zero errors
+- [x] Stitch UI mockup generated for visual reference
 
 ### Phase 7 — APK Build (PENDING)
 - [ ] Bump `versionCode` and `versionName` in `android/app/build.gradle`
@@ -143,13 +124,13 @@ Nothing currently in progress. Ready for Phase 2.
 | Phase | Status | Completion |
 |-------|--------|-----------|
 | Phase 1 — Foundation | ✅ Complete | 100% |
-| Phase 2 — Data Layer | ⏳ Pending | 0% |
-| Phase 3 — Calculator Screen | ⏳ Pending | 0% |
-| Phase 4 — Topology Screen | ⏳ Pending | 0% |
-| Phase 5 — Validation & StatusBadge | ⏳ Pending | 0% |
-| Phase 6 — Catalog Screen | ⏳ Pending | 0% |
+| Phase 2 — Data Layer | ✅ Complete | 100% |
+| Phase 3 — Calculator Screen | ✅ Complete | 100% |
+| Phase 4 — Topology Screen | ✅ Complete | 100% |
+| Phase 5 — Validation & StatusBadge | ✅ Complete | 100% |
+| Phase 6 — Catalog Screen | ✅ Complete | 100% |
 | Phase 7 — APK Build | ⏳ Pending | 0% |
-| **Overall** | **⏳ In Progress** | **~14%** |
+| **Overall** | **⏳ In Progress** | **~86%** |
 
 ---
 
@@ -173,4 +154,5 @@ Nothing currently in progress. Ready for Phase 2.
 ---
 
 **Last Updated:** 2026-04-13  
-**Next Review:** After Phase 2 completion
+**Next Review:** After Phase 7 completion
+

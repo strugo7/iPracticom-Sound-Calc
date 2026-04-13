@@ -111,6 +111,8 @@ export const S = {
         impedanceMin: 'מינימום מגבר',
         powerRequired: 'הספק נדרש',
         powerAvailable: 'הספק זמין',
+        lineVoltageSupported: 'המגבר תומך ב-70V/100V',
+        lineVoltageNotSupported: 'המגבר אינו תומך ב-70V/100V',
 
         // הודעות שגיאה (מופיעות ב-errors[])
         errorImpedanceTooLow:
@@ -119,6 +121,7 @@ export const S = {
             'הספק הרמקולים עולה על כושר המגבר — יש להפחית רמקולים או להחליף מגבר',
         errorLineVoltageMismatch:
             'לרמקול יש שנאי קו — ודא שהמגבר תומך ב-70V/100V',
+        errorsSummaryTitle: 'שגיאות שזוהו',
     },
 
     // ─── מסך קטלוג ────────────────────────────────────────────────────────────

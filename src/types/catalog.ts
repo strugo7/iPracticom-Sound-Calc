@@ -75,3 +75,27 @@ export interface Catalog {
   amplifiers: Amplifier[];
   speakers: Speaker[];
 }
+
+// Topology / Signal Chain Types
+export type NodeType = "source" | "mixer" | "matrix" | "amplifier" | "speaker_group";
+
+export interface ChainNode {
+  id: string;
+  type: NodeType;
+  productId: string;
+  wiring?: "series" | "parallel"; // speakers only
+  quantity?: number; // speakers only
+}
+
+// Validation Types
+export interface ValidationResult {
+  impedanceOk: boolean;
+  powerOk: boolean;
+  lineVoltageOk: boolean;
+  impedanceActual: number;
+  impedanceMin: number;
+  powerRequired: number;
+  powerAvailable: number;
+  lineVoltageRequired: boolean; // true if any speaker has a line transformer
+  errors: string[];
+}
