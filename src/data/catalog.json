@@ -1,0 +1,267 @@
+{
+    "_meta": {
+        "version": "1.0.0",
+        "lastUpdated": "2026-04-13",
+        "note": "Verified specs from manufacturer datasheets and Sweetwater/B&H listings. Entries marked with _needsVerification: true require Ofek to confirm exact iPracticom specs before release."
+    },
+    "players": [
+        {
+            "id": "player-arylic-s50-pro-plus",
+            "name": "Arylic S50 Pro+",
+            "model": "S50 Pro+",
+            "manufacturer": "Arylic",
+            "outputType": "RCA",
+            "outputVoltage": 2.0,
+            "outputNote": "Line-level preamp output (variable volume). Standard 2V RMS at 0dB.",
+            "additionalOutputs": ["Optical", "Coaxial", "Sub Out"],
+            "streamingProtocols": ["AirPlay", "Spotify Connect", "DLNA", "UPnP"],
+            "connectivity": ["WiFi 2.4GHz", "Ethernet", "Bluetooth 5.0 aptX HD"],
+            "maxResolution": "192kHz/24bit"
+        },
+        {
+            "id": "player-audiopro-link1",
+            "name": "Audio Pro Link 1",
+            "model": "Link 1",
+            "manufacturer": "Audio Pro",
+            "outputType": "RCA",
+            "outputVoltage": 1.0,
+            "outputNote": "3.5mm analog output (included 3.5mm-to-RCA adapter in box). ~1V RMS line level.",
+            "additionalOutputs": ["Optical"],
+            "streamingProtocols": ["AirPlay", "Spotify Connect", "DLNA", "UPnP"],
+            "connectivity": ["WiFi 2.4GHz", "Ethernet"],
+            "maxResolution": "24bit/96kHz"
+        }
+    ],
+    "mixers": [
+        {
+            "id": "mixer-placeholder-01",
+            "name": "ממיקסר לדוגמה",
+            "model": "PLACEHOLDER",
+            "manufacturer": "TBD",
+            "inputCount": 4,
+            "outputCount": 2,
+            "gainStages": 2,
+            "_needsVerification": true,
+            "_note": "אופק — אין ברשימה מיקסרים ספציפיים. יש להוסיף דגמים אמיתיים לפני שימוש."
+        }
+    ],
+    "matrices": [
+        {
+            "id": "matrix-jade-zmp64",
+            "name": "Jade ZMP-64",
+            "model": "ZMP-64",
+            "manufacturer": "Jade",
+            "inputs": 6,
+            "outputs": 4,
+            "routingMatrix": [
+                [true, true, true, true, true, true],
+                [true, true, true, true, true, true],
+                [true, true, true, true, true, true],
+                [true, true, true, true, true, true]
+            ],
+            "maxPathsPerOutput": 6,
+            "zones": 4,
+            "zoneFeatures": {
+                "independentVolume": true,
+                "bassControl": true,
+                "trebleControl": true,
+                "subwooferCrossover": true
+            },
+            "builtIn": ["USB player", "Bluetooth"],
+            "dsp": true
+        },
+        {
+            "id": "matrix-symetrix-jupiter4",
+            "name": "Symetrix Jupiter 4",
+            "model": "Jupiter 4",
+            "manufacturer": "Symetrix",
+            "inputs": 4,
+            "outputs": 4,
+            "routingMatrix": [
+                [true, true, true, true],
+                [true, true, true, true],
+                [true, true, true, true],
+                [true, true, true, true]
+            ],
+            "maxPathsPerOutput": 4,
+            "dsp": true
+        },
+        {
+            "id": "matrix-symetrix-jupiter8",
+            "name": "Symetrix Jupiter 8",
+            "model": "Jupiter 8",
+            "manufacturer": "Symetrix",
+            "inputs": 8,
+            "outputs": 8,
+            "routingMatrix": [
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true]
+            ],
+            "maxPathsPerOutput": 8,
+            "dsp": true
+        },
+        {
+            "id": "matrix-symetrix-jupiter12",
+            "name": "Symetrix Jupiter 12",
+            "model": "Jupiter 12",
+            "manufacturer": "Symetrix",
+            "inputs": 12,
+            "outputs": 4,
+            "routingMatrix": [
+                [true, true, true, true, true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true, true, true, true, true],
+                [true, true, true, true, true, true, true, true, true, true, true, true]
+            ],
+            "maxPathsPerOutput": 12,
+            "dsp": true
+        }
+    ],
+    "amplifiers": [
+        {
+            "id": "amp-behringer-nx1000",
+            "name": "Behringer NX1000",
+            "model": "NX1000",
+            "manufacturer": "Behringer",
+            "channels": 2,
+            "powerPerChannel": 300,
+            "minImpedance": 2,
+            "supports70V": false,
+            "supports100V": false,
+            "dsp": false
+        },
+        {
+            "id": "amp-behringer-nx3000",
+            "name": "Behringer NX3000",
+            "model": "NX3000",
+            "manufacturer": "Behringer",
+            "channels": 2,
+            "powerPerChannel": 900,
+            "minImpedance": 2,
+            "supports70V": false,
+            "supports100V": false,
+            "dsp": false
+        },
+        {
+            "id": "amp-behringer-nx6000",
+            "name": "Behringer NX6000",
+            "model": "NX6000",
+            "manufacturer": "Behringer",
+            "channels": 2,
+            "powerPerChannel": 3000,
+            "minImpedance": 2,
+            "supports70V": false,
+            "supports100V": false,
+            "dsp": false
+        },
+        {
+            "id": "amp-behringer-nx1000d",
+            "name": "Behringer NX1000D",
+            "model": "NX1000D",
+            "manufacturer": "Behringer",
+            "channels": 2,
+            "powerPerChannel": 300,
+            "minImpedance": 2,
+            "supports70V": false,
+            "supports100V": false,
+            "dsp": true
+        },
+        {
+            "id": "amp-behringer-nx3000d",
+            "name": "Behringer NX3000D",
+            "model": "NX3000D",
+            "manufacturer": "Behringer",
+            "channels": 2,
+            "powerPerChannel": 900,
+            "minImpedance": 2,
+            "supports70V": false,
+            "supports100V": false,
+            "dsp": true
+        },
+        {
+            "id": "amp-behringer-nx6000d",
+            "name": "Behringer NX6000D",
+            "model": "NX6000D",
+            "manufacturer": "Behringer",
+            "channels": 2,
+            "powerPerChannel": 3000,
+            "minImpedance": 2,
+            "supports70V": false,
+            "supports100V": false,
+            "dsp": true
+        },
+        {
+            "id": "amp-labgruppen-e5-4",
+            "name": "LAB Gruppen E 5:4",
+            "model": "E 5:4",
+            "manufacturer": "LAB Gruppen",
+            "channels": 4,
+            "powerPerChannel": 125,
+            "totalPower": 500,
+            "minImpedance": 4,
+            "supports70V": true,
+            "supports100V": true,
+            "dsp": false,
+            "intelliDrive": true
+        },
+        {
+            "id": "amp-labgruppen-e10-4",
+            "name": "LAB Gruppen E 10:4",
+            "model": "E 10:4",
+            "manufacturer": "LAB Gruppen",
+            "channels": 4,
+            "powerPerChannel": 250,
+            "totalPower": 1000,
+            "minImpedance": 2,
+            "supports70V": true,
+            "supports100V": false,
+            "dsp": false,
+            "intelliDrive": true
+        },
+        {
+            "id": "amp-labgruppen-e20-4",
+            "name": "LAB Gruppen E 20:4",
+            "model": "E 20:4",
+            "manufacturer": "LAB Gruppen",
+            "channels": 4,
+            "powerPerChannel": 500,
+            "totalPower": 2000,
+            "minImpedance": 2,
+            "supports70V": true,
+            "supports100V": true,
+            "dsp": false,
+            "intelliDrive": true
+        }
+    ],
+    "speakers": [
+        {
+            "id": "speaker-placeholder-ceiling-8ohm",
+            "name": "רמקול תקרה 8Ω (דוגמה)",
+            "model": "PLACEHOLDER",
+            "manufacturer": "TBD",
+            "powerRating": 30,
+            "impedance": 8,
+            "hasLineTransformer": false,
+            "_needsVerification": true,
+            "_note": "אופק — טרם סיפקת רשימת רמקולים. יש להחליף entry זה בדגמים אמיתיים."
+        },
+        {
+            "id": "speaker-placeholder-70v-ceiling",
+            "name": "רמקול תקרה 70V (דוגמה)",
+            "model": "PLACEHOLDER",
+            "manufacturer": "TBD",
+            "powerRating": 6,
+            "impedance": 8,
+            "hasLineTransformer": true,
+            "transformerTaps": [1, 2, 4, 6],
+            "_needsVerification": true,
+            "_note": "אופק — דוגמה לרמקול עם שנאי קו. יש להחליף בדגמים אמיתיים."
+        }
+    ]
+}

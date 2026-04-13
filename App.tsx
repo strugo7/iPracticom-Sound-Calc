@@ -1,45 +1,52 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { PaperProvider } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { setupRTL } from './src/utils/rtl';
+import { iPracticomMD3Theme, iPracticomColors } from './src/theme';
+import { S } from './src/strings';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+import CalculatorScreen from './src/screens/Calculator';
+import TopologyScreen   from './src/screens/Topology';
+import CatalogScreen    from './src/screens/Catalog';
 
+setupRTL();
+
+const Tab = createBottomTabNavigator();
+
+export default function App() {
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <PaperProvider theme={iPracticomMD3Theme}>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            tabBarActiveTintColor:   iPracticomColors.electricBlue,
+            tabBarInactiveTintColor: iPracticomColors.midGray,
+            tabBarStyle: { backgroundColor: iPracticomColors.white },
+            tabBarIcon: ({ color, size }) => {
+              const icons: Record<string, string> = {
+                Calculator: 'calculator-variant-outline',
+                Topology:   'sitemap-outline',
+                Catalog:    'view-list-outline',
+              };
+              return (
+                <MaterialCommunityIcons
+                  name={icons[route.name] ?? 'circle-outline'}
+                  color={color}
+                  size={size}
+                />
+              );
+            },
+          })}
+        >
+          <Tab.Screen name="Calculator" component={CalculatorScreen} options={{ title: S.nav.calculator }} />
+          <Tab.Screen name="Topology"   component={TopologyScreen}   options={{ title: S.nav.topology }} />
+          <Tab.Screen name="Catalog"    component={CatalogScreen}    options={{ title: S.nav.catalog }} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
