@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: iPracticomColors.white,
+    textAlign: 'right',
   },
   statusPill: {
     paddingHorizontal: iPracticomSpacing.sm + 2,
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: iPracticomColors.white,
+    textAlign: 'right',
   },
   value: {
     fontSize: 13,
@@ -127,11 +129,13 @@ const styles = StyleSheet.create({
     color: iPracticomColors.white,
     marginTop: iPracticomSpacing.xs + 2,
     opacity: 0.95,
+    textAlign: 'right',
   },
   detail: {
     fontSize: 12,
     color: iPracticomColors.white,
     marginTop: 2,
     opacity: 0.8,
+    textAlign: 'right',
   },
 });

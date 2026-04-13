@@ -132,10 +132,10 @@ export default function FormulaCard() {
         value={targetVariable}
         onValueChange={handleVariableChange}
         buttons={[
-          { value: 'P', label: 'W (הספק)', accessibilityLabel: 'Power' },
-          { value: 'V', label: 'V (מתח)', accessibilityLabel: 'Voltage' },
-          { value: 'I', label: 'A (זרם)', accessibilityLabel: 'Current' },
-          { value: 'R', label: 'Ω (התנגדות)', accessibilityLabel: 'Resistance' },
+          { value: 'P', label: 'W\nהספק', accessibilityLabel: 'Power' },
+          { value: 'V', label: 'V\nמתח', accessibilityLabel: 'Voltage' },
+          { value: 'I', label: 'A\nזרם', accessibilityLabel: 'Current' },
+          { value: 'R', label: 'Ω\nהתנגד׳', accessibilityLabel: 'Resistance' },
         ]}
         style={styles.segmentedButtons}
       />

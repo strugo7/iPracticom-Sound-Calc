@@ -345,6 +345,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: iPracticomColors.darkNavy,
+    textAlign: 'right',
   },
   backButton: {
     width: 40,
@@ -359,6 +360,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: iPracticomSpacing.md,
     paddingTop: iPracticomSpacing.md,
     paddingBottom: iPracticomSpacing.sm,
+    textAlign: 'right',
   },
   typeButton: {
     flexDirection: 'row-reverse',
@@ -381,6 +383,7 @@ const styles = StyleSheet.create({
     color: iPracticomColors.darkNavy,
     marginRight: iPracticomSpacing.md,
     flex: 1,
+    textAlign: 'right',
   },
   typeLabelDisabled: {
     color: iPracticomColors.midGray,
@@ -397,6 +400,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 14,
     color: iPracticomColors.midGray,
+    textAlign: 'right',
   },
   productButton: {
     flexDirection: 'row-reverse',
@@ -416,16 +420,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: iPracticomColors.darkNavy,
+    textAlign: 'right',
   },
   productModel: {
     fontSize: 12,
     color: iPracticomColors.midGray,
     marginTop: 2,
+    textAlign: 'right',
   },
   productMfg: {
     fontSize: 11,
     color: iPracticomColors.midGray,
     marginTop: 2,
     fontStyle: 'italic',
+    textAlign: 'right',
   },
 });

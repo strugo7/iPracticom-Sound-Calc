@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: iPracticomColors.darkNavy,
+    textAlign: 'right',
   },
   overallIndicator: {
     paddingHorizontal: iPracticomSpacing.md,
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
   overallText: {
     fontSize: 14,
     fontWeight: 'bold',
+    textAlign: 'right',
   },
   divider: {
     backgroundColor: iPracticomColors.midGray,
@@ -197,6 +199,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: iPracticomColors.error,
+    textAlign: 'right',
   },
   errorText: {
     fontSize: 12,

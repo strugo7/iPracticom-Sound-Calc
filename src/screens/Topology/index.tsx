@@ -52,7 +52,7 @@ export default function TopologyScreen() {
     <SafeAreaView style={styles.container}>
       {/* כותרת */}
       <Appbar.Header style={styles.appbar}>
-        <Text style={styles.title}>{S.topology.screenTitle}</Text>
+        <Appbar.Content title={S.topology.screenTitle} titleStyle={styles.title} />
       </Appbar.Header>
 
       {isEmpty ? (

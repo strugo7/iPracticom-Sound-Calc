@@ -196,17 +196,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: iPracticomColors.midGray,
     fontWeight: '500',
+    textAlign: 'right',
   },
   productName: {
     fontSize: 15,
     fontWeight: '600',
     color: iPracticomColors.darkNavy,
     marginTop: 2,
+    textAlign: 'right',
   },
   productModel: {
     fontSize: 12,
     color: iPracticomColors.midGray,
     marginTop: 2,
+    textAlign: 'right',
   },
   speakerOptions: {
     marginTop: iPracticomSpacing.md,
@@ -224,6 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: iPracticomColors.darkNavy,
     fontWeight: '500',
+    textAlign: 'right',
   },
   optionButton: {
     paddingHorizontal: iPracticomSpacing.sm,
@@ -235,6 +239,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: iPracticomColors.electricBlue,
     fontWeight: '600',
+    textAlign: 'right',
   },
   quantityControls: {
     flexDirection: 'row-reverse',
