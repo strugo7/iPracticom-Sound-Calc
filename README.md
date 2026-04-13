@@ -1,97 +1,149 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# iPracticom Sound Calc
 
-# Getting Started
+**כלי עבודה פנימי לטכנאי שטח של iPracticom**
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## תוכן עניינים
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- [מה האפליקציה עושה](#מה-האפליקציה-עושה)
+- [מסכים עיקריים](#מסכים-עיקריים)
+- [התקנה על טלפון אנדרואיד](#התקנה-על-טלפון-אנדרואיד)
+- [דרישות מינימום](#דרישות-מינימום)
+- [הערות חשובות](#הערות-חשובות)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## מה האפליקציה עושה
 
-# OR using Yarn
-yarn start
+iPracticom Sound Calc היא אפליקציית מחשבון מקצועית לטכנאי קול. האפליקציה עובדת **ללא חיבור לאינטרנט** ומאפשרת שלושה תהליכי עבודה עיקריים:
+
+1. **מחשבון חוק אוהם** — חישוב הספק, מתח, זרם והתנגדות (12 נוסחאות).
+2. **בניית טופולוגיה** — הגדרת שרשרת אות מלאה: מקור → מיקסר/מטריקס → מגבר → רמקולים.
+3. **מנוע תיקוף** — בדיקה בזמן אמת של עכבה והספק עם אינדיקטורים ירוק/אדום.
+
+---
+
+## מסכים עיקריים
+
+### מחשבון (חוק אוהם)
+בחר איזה ערך אתה רוצה לחשב (P / V / I / R), הכנס שני ערכים ידועים — האפליקציה מחשבת את השלישי באופן מיידי.
+
+### טופולוגיה
+בנה שרשרת אות על ידי הוספת רכיבים מהקטלוג המובנה. האפליקציה:
+- שומרת את השרשרת מקומית על הטלפון (גם לאחר כיבוי)
+- מציגה תוצאות תיקוף מיידיות לאחר כל שינוי
+- מזהירה על חוסר התאמה בעכבה, הספק, או תמיכת 70V/100V
+
+### קטלוג מוצרים
+גלישה וחיפוש בכל מוצרי iPracticom: נגנים, מיקסרים, מטריקסים, מגברים ורמקולים. כולל פרטי מפרט מלאים לכל מוצר.
+
+---
+
+## התקנה על טלפון אנדרואיד
+
+### שלב 1 — הורדת קובץ ה־APK
+
+קבל את קובץ ה-APK מאחראי ה-LMS של iPracticom, או הורד אותו ישירות מהנתיב:
+
+```
+android/app/build/outputs/apk/release/app-release.apk
 ```
 
-## Step 2: Build and run your app
+שם הקובץ: **`app-release.apk`** (גודל: ~65MB)
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+---
 
-### Android
+### שלב 2 — אפשר התקנה ממקורות לא ידועים
 
-```sh
-# Using npm
-npm run android
+לפני ההתקנה, יש לאפשר ב-Android התקנת אפליקציות שלא מחנות Google Play:
 
-# OR using Yarn
-yarn android
+**Android 8.0 ומעלה:**
+1. עבור ל־**הגדרות** ← **אפליקציות**
+2. לחץ על אפליקציית **מנהל הקבצים** (או הדפדפן שממנו תתקין)
+3. לחץ על **התקן אפליקציות לא ידועות**
+4. הפעל את המתג **"אפשר מגורם זה"**
+
+> **טיפ:** אם אתה מתקין מהמחשב דרך USB, הפעל את האפשרות ב-ADB (ראה שלב 4A).
+
+---
+
+### שלב 3 — העברת ה-APK לטלפון
+
+**אפשרות א׳ — כבל USB:**
+1. חבר את הטלפון למחשב בכבל USB
+2. בטלפון — בחר **"העברת קבצים" (MTP)**
+3. גרור את `app-release.apk` לתיקיית **Downloads** בטלפון
+
+**אפשרות ב׳ — WhatsApp / אימייל / Drive:**
+- שלח לעצמך את קובץ ה-APK דרך WhatsApp, Gmail או Google Drive
+- פתח את הקובץ ישירות מהאפליקציה
+
+**אפשרות ג׳ — דפדפן:**
+- העלה את הקובץ לשרת פנימי או Drive
+- גלוש לקישור מהטלפון והורד ישירות
+
+---
+
+### שלב 4 — התקנה
+
+1. פתח את **מנהל הקבצים** בטלפון
+2. נווט לתיקיית **Downloads**
+3. לחץ על **`app-release.apk`**
+4. לחץ **"התקן"** בחלון שנפתח
+5. המתן לסיום ההתקנה
+6. לחץ **"פתח"** — האפליקציה מוכנה לשימוש
+
+---
+
+### שלב 4A — התקנה דרך ADB (למשתמשים מתקדמים)
+
+אם יש לך גישה ל-ADB (Android Debug Bridge):
+
+```bash
+# הפעל ניפוי שגיאות USB בטלפון (הגדרות ← אפשרויות מפתח ← ניפוי USB)
+adb devices
+
+# התקן את האפליקציה
+adb install android/app/build/outputs/apk/release/app-release.apk
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## דרישות מינימום
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+| פרט | דרישה |
+|---|---|
+| מערכת הפעלה | Android 8.0 (Oreo) ומעלה |
+| גרסת API | API 26+ |
+| אחסון פנוי | 100MB |
+| חיבור לאינטרנט | **לא נדרש** |
+| הגדרות מיוחדות | התקנה ממקורות לא ידועים |
 
-```sh
-bundle install
-```
+---
 
-Then, and every time you update your native dependencies, run:
+## דרישות מינימום לפלטפורמת iOS
 
-```sh
-bundle exec pod install
-```
+> האפליקציה מיועדת ל-**Android בלבד**. אין תמיכה ב-iOS.
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## הערות חשובות
 
-# OR using Yarn
-yarn ios
-```
+- **קטלוג המוצרים מובנה באפליקציה** — אין צורך בחיבור לאינטרנט לצפייה במפרטים.
+- **שרשרת הטופולוגיה נשמרת מקומית** — הנתונים נשמרים על הטלפון ולא נשלחים לשום שרת.
+- **אין עדכונים אוטומטיים** — כדי לקבל גרסה חדשה, יש לקבל APK מעודכן מאחראי ה-LMS ולהתקין מחדש.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## גרסה נוכחית
 
-## Step 3: Modify your app
+| פרט | ערך |
+|---|---|
+| גרסה | 1.0.1 |
+| תאריך עדכון | אפריל 2026 |
+| מפתח | iPracticom |
 
-Now that you have successfully run the app, let's make changes!
+---
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+*לתמיכה טכנית, פנה לצוות iPracticom.*
