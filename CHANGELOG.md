@@ -62,7 +62,7 @@ All notable changes and progress updates to the iPracticom Sound Calc project wi
 
 ## 🔄 In Progress
 
-Nothing currently in progress. Ready for Phase 7.
+All phases complete! 🎉
 
 ---
 
@@ -110,12 +110,15 @@ Nothing currently in progress. Ready for Phase 7.
 - [x] TypeScript compilation: zero errors
 - [x] Stitch UI mockup generated for visual reference
 
-### Phase 7 — APK Build (PENDING)
-- [ ] Bump `versionCode` and `versionName` in `android/app/build.gradle`
-- [ ] Run release build: `cd android && ./gradlew assembleRelease`
-- [ ] Verify APK at `android/app/build/outputs/apk/release/app-release.apk`
-- [ ] Measure and report final APK size
-- [ ] Checkpoint: Signed APK ready for distribution
+### Phase 7 — APK Build ✅
+- [x] Bumped `versionName` to `1.0.0` in `android/app/build.gradle`
+- [x] Bumped `minSdkVersion` to 26 (API 26 / Android 8.0) per CLAUDE.md
+- [x] Installed JDK 17 (OpenJDK via Homebrew) and Android SDK (command-line tools)
+- [x] Installed `react-native-nitro-modules` (peer dependency of `react-native-mmkv`)
+- [x] Created `android/local.properties` with SDK path
+- [x] Ran `./gradlew assembleRelease` — BUILD SUCCESSFUL (6m 33s, 320 tasks)
+- [x] APK verified at `android/app/build/outputs/apk/release/app-release.apk`
+- [x] **Final APK size: 65 MB** (signed with debug keystore)
 
 ---
 
@@ -129,8 +132,8 @@ Nothing currently in progress. Ready for Phase 7.
 | Phase 4 — Topology Screen | ✅ Complete | 100% |
 | Phase 5 — Validation & StatusBadge | ✅ Complete | 100% |
 | Phase 6 — Catalog Screen | ✅ Complete | 100% |
-| Phase 7 — APK Build | ⏳ Pending | 0% |
-| **Overall** | **⏳ In Progress** | **~86%** |
+| Phase 7 — APK Build | ✅ Complete | 100% |
+| **Overall** | **✅ Complete** | **100%** |
 
 ---
 
