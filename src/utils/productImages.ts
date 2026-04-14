@@ -21,10 +21,15 @@ const PRODUCT_IMAGES: Record<string, ImageSourcePropType> = {
   // 'mixer-xxx': require('../../assets/images/mixer-xxx.jpg'),
 
   // ── מטריקסים ───────────────────────────────────────────────────────────────
-  // 'matrix-xxx': require('../../assets/images/matrix-xxx.jpg'),
+  'matrix-symetrix-jupiter8': require('../../assets/images/matrix-symetrix-jupiter8.jpeg'),
 
   // ── מגברים ─────────────────────────────────────────────────────────────────
-  // 'amp-xxx': require('../../assets/images/amp-xxx.jpg'),
+  'amp-behringer-nx1000':  require('../../assets/images/amp-behringer-nx1000.png'),
+  'amp-behringer-nx1000d': require('../../assets/images/amp-behringer-nx1000d.png'),
+  'amp-behringer-nx3000':  require('../../assets/images/amp-behringer-nx3000.png'),
+  'amp-behringer-nx3000d': require('../../assets/images/amp-behringer-nx3000d.png'),
+  'amp-behringer-nx6000':  require('../../assets/images/amp-behringer-nx6000.png'),
+  'amp-behringer-nx6000d': require('../../assets/images/amp-behringer-nx6000d.png'),
 
   // ── רמקולים ────────────────────────────────────────────────────────────────
   // 'spk-xxx': require('../../assets/images/spk-xxx.jpg'),

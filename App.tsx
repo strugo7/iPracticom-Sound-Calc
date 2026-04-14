@@ -10,7 +10,7 @@ import { S } from './src/strings';
 
 import CalculatorScreen from './src/screens/Calculator';
 import TopologyScreen   from './src/screens/Topology';
-import CatalogScreen    from './src/screens/Catalog';
+import { CatalogNavigator } from './src/navigation/CatalogNavigator';
 
 setupRTL();
 
@@ -44,7 +44,7 @@ export default function App() {
         >
           <Tab.Screen name="Calculator" component={CalculatorScreen} options={{ title: S.nav.calculator }} />
           <Tab.Screen name="Topology"   component={TopologyScreen}   options={{ title: S.nav.topology }} />
-          <Tab.Screen name="Catalog"    component={CatalogScreen}    options={{ title: S.nav.catalog }} />
+          <Tab.Screen name="Catalog"    component={CatalogNavigator} options={{ title: S.nav.catalog }} />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>

@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
   View,
   StyleSheet,
@@ -18,7 +20,7 @@ import {
   CatalogSection,
 } from '../../store/catalogStore';
 import { CatalogCard } from '../../components/CatalogCard';
-import { ProductDetailSheet } from '../../components/ProductDetailSheet';
+import { CatalogStackParamList } from '../../navigation/CatalogNavigator';
 
 // ─── מסך קטלוג — רשימת מוצרים עם חיפוש, סינון וגיליון פרטים ───────────────
 
@@ -31,15 +33,14 @@ const CATEGORY_CHIPS: { key: CategoryKey; label: string }[] = [
   { key: 'speakers', label: S.catalog.categories.speakers },
 ];
 
+type CatalogNavigationProp = StackNavigationProp<CatalogStackParamList, 'CatalogList'>;
+
 export default function CatalogScreen() {
+  const navigation = useNavigation<CatalogNavigationProp>();
   const searchQuery = useCatalogStore((s) => s.searchQuery);
   const activeCategory = useCatalogStore((s) => s.activeCategory);
-  const selectedProduct = useCatalogStore((s) => s.selectedProduct);
-  const selectedProductCategory = useCatalogStore((s) => s.selectedProductCategory);
   const setSearchQuery = useCatalogStore((s) => s.setSearchQuery);
   const setActiveCategory = useCatalogStore((s) => s.setActiveCategory);
-  const selectProduct = useCatalogStore((s) => s.selectProduct);
-  const clearSelection = useCatalogStore((s) => s.clearSelection);
 
   // סלקטור — מחשב סקשנים מסוננים
   const sections = useMemo(
@@ -50,9 +51,9 @@ export default function CatalogScreen() {
 
   const handleProductPress = useCallback(
     (product: AnyProduct, category: CategoryKey) => {
-      selectProduct(product, category);
+      navigation.push('ProductDetail', { product, category });
     },
-    [selectProduct],
+    [navigation],
   );
 
   const renderItem = useCallback(
@@ -151,14 +152,6 @@ export default function CatalogScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={null}
-      />
-
-      {/* גיליון פרטי מוצר */}
-      <ProductDetailSheet
-        visible={selectedProduct !== null}
-        product={selectedProduct}
-        category={selectedProductCategory}
-        onDismiss={clearSelection}
       />
     </View>
   );

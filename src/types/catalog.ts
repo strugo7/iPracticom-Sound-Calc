@@ -59,6 +59,8 @@ export interface Amplifier {
   dsp?: boolean;
   totalPower?: number;
   intelliDrive?: boolean;
+  inputConnectors?: string[];
+  technology?: string;
 }
 
 export interface Speaker {

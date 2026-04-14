@@ -141,7 +141,7 @@ export const S = {
             speakers: 'רמקולים',
         },
 
-        // גיליון פרטי מוצר
+        // גיליון פרטי מוצר (bottom-sheet modal — מסך ישן)
         detailSheet: {
             manufacturer: 'יצרן',
             model: 'דגם',
@@ -164,6 +164,33 @@ export const S = {
             yes: 'כן',
             no: 'לא',
             closeButton: 'סגור',
+        },
+
+        // מסך פרטי מוצר — דף מלא
+        productDetail: {
+            screenTitle: 'פרטי ציוד',
+            specsSection: 'מפרט טכני',
+            connectionsSection: 'חיבורים וחיווט',
+            guideButton: 'מדריך',
+            addToChainButton: 'הוסף לשרשרת',
+            inputConnectors: 'כניסות',
+            technology: 'טכנולוגיה',
+            connectivity: 'קישוריות',
+            channels: 'ערוצים',
+            powerPerChannel: 'הספק/ערוץ',
+            totalPower: 'הספק כולל',
+            minImpedance: 'עכבה מינימלית',
+            supports70V: '70V',
+            supports100V: '100V',
+            dsp: 'DSP',
+            intelliDrive: 'IntelliDrive',
+            inputs: 'כניסות',
+            outputs: 'יציאות',
+            zones: 'אזורים',
+            powerRating: 'הספק רציף',
+            impedance: 'עכבה',
+            snackAddedToChain: 'התווסף לשרשרת',
+            snackComingSoon: 'בקרוב זמין',
         },
     },
 
