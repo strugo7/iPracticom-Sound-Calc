@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider } from 'react-native-paper';
@@ -11,6 +11,9 @@ import { S } from './src/strings';
 import CalculatorScreen from './src/screens/Calculator';
 import TopologyScreen   from './src/screens/Topology';
 import { CatalogNavigator } from './src/navigation/CatalogNavigator';
+
+import { UpdateModal }     from './src/components/UpdateModal';
+import { UpdateSnackbars } from './src/components/UpdateSnackbars';
 
 setupRTL();
 
@@ -47,6 +50,10 @@ export default function App() {
           <Tab.Screen name="Catalog"    component={CatalogNavigator} options={{ title: S.nav.catalog }} />
         </Tab.Navigator>
       </NavigationContainer>
+
+      {/* קומפוננטות עדכון גלובליות — מוצגות מעל כל מסך */}
+      <UpdateModal />
+      <UpdateSnackbars />
     </PaperProvider>
   );
 }

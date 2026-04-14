@@ -13,6 +13,7 @@ import { useTopologyStore } from '../../store/topologyStore';
 import { TopologyNode } from '../../components/TopologyNode';
 import { AddNodeModal } from '../../components/AddNodeModal';
 import { ValidationPanel } from '../../components/ValidationPanel';
+import { HeaderRefreshButton } from '../../components/Header';
 
 export default function TopologyScreen() {
   const { chain, removeNode, updateNode } = useTopologyStore();
@@ -50,8 +51,9 @@ export default function TopologyScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* כותרת */}
+      {/* כותרת — כפתור עדכון בצד שמאל (RTL), שם מסך בצד ימין */}
       <Appbar.Header style={styles.appbar}>
+        <HeaderRefreshButton />
         <Appbar.Content title={S.topology.screenTitle} titleStyle={styles.title} />
       </Appbar.Header>
 

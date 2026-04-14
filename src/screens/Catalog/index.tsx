@@ -21,6 +21,7 @@ import {
 } from '../../store/catalogStore';
 import { CatalogCard } from '../../components/CatalogCard';
 import { CatalogStackParamList } from '../../navigation/CatalogNavigator';
+import { HeaderRefreshButton } from '../../components/Header';
 
 // ─── מסך קטלוג — רשימת מוצרים עם חיפוש, סינון וגיליון פרטים ───────────────
 
@@ -97,14 +98,17 @@ export default function CatalogScreen() {
 
   return (
     <View style={styles.container}>
-      {/* כותרת */}
+      {/* כותרת — כפתור עדכון בצד שמאל (RTL), שם מסך ואייקון בצד ימין */}
       <View style={styles.titleRow}>
-        <MaterialCommunityIcons
-          name="book-open-page-variant-outline"
-          size={24}
-          color={iPracticomColors.electricBlue}
-        />
-        <Text style={styles.screenTitle}>{S.catalog.screenTitle}</Text>
+        <HeaderRefreshButton />
+        <View style={styles.titleTextRow}>
+          <MaterialCommunityIcons
+            name="book-open-page-variant-outline"
+            size={24}
+            color={iPracticomColors.electricBlue}
+          />
+          <Text style={styles.screenTitle}>{S.catalog.screenTitle}</Text>
+        </View>
       </View>
 
       {/* חיפוש */}
@@ -165,10 +169,14 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: iPracticomSpacing.lg,
+    justifyContent: 'space-between',
+    paddingRight: iPracticomSpacing.lg,
     paddingTop: iPracticomSpacing.lg,
     paddingBottom: iPracticomSpacing.sm,
+  },
+  titleTextRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: iPracticomSpacing.sm,
   },
   screenTitle: {

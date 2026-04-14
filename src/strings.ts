@@ -211,6 +211,20 @@ export const S = {
         notAvailable: 'לא זמין',
     },
 
+    // ─── בדיקת עדכונים ───────────────────────────────────────────────────────
+    updates: {
+        updateAvailable:    '🔄 עדכון זמין!',
+        latestVersion:      'גרסה חדשה',
+        currentVersion:     'גרסה נוכחית',
+        download:           'הורד',
+        checkingForUpdates: '⏳ מחפש עדכונים...',
+        youAreUpToDate:     'אתה מעודכן',
+        downloading:        '⏳ מוריד...',
+        noInternet:         'אין חיבור אינטרנט',
+        connectionError:    'בעיה בחיבור, נסה שוב',
+        downloadComplete:   'APK הורד לתיקיית Downloads',
+    },
+
     // ─── נגישות (accessibilityLabel) ─────────────────────────────────────────
     a11y: {
         removeNodeButton: 'הסר רכיב מהשרשרת',
