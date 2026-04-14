@@ -122,6 +122,64 @@ All phases complete! 🎉
 
 ---
 
+## [1.0.1] — 2026-04-15
+
+### 🆕 Phase 8 — GitHub Update Checker ✅
+
+#### ספריות חדשות
+- [x] `react-native-fs` — הורדת קבצים ל-Downloads
+- [x] `@react-native-community/netinfo` — בדיקת קישוריות רשת
+
+#### שכבת שירות (`src/services/updateService.ts`)
+- [x] `checkForUpdates()` — שליפת הגרסה האחרונה מ-GitHub API (`/repos/strugo7/iPracticom-Sound-Calc/releases/latest`)
+- [x] `isUpdateAvailable()` — השוואת גרסאות semantic versioning (תומך בקידומת `v`)
+- [x] `downloadAPK()` — הורדת APK לתיקיית Downloads עם callback לאחוזי התקדמות
+- [x] `openDownloadsFolder()` — פתיחת מנהל הקבצים לתיקיית Downloads
+- [x] `hasNetworkConnectivity()` — בדיקת חיבור לרשת דרך NetInfo
+- [x] טיפול בשגיאות: `NO_INTERNET` / `API_ERROR` / `DOWNLOAD_ERROR`
+
+#### מצב (Zustand — `src/store/updateStore.ts`)
+- [x] `currentVersion`, `latestVersion`, `isUpdateAvailable`, `downloadUrl`
+- [x] `isChecking`, `isDownloading`, `downloadProgress` (0–100), `downloadComplete`
+- [x] פעולות: `checkForUpdates()`, `downloadAPK()`, `dismissModal()`, `resetError()`
+
+#### Hook (`src/hooks/useCheckUpdates.ts`)
+- [x] API נקי לקומפוננטות UI — עוטף את `updateStore`
+
+#### קומפוננטות UI
+
+**`src/components/Header/index.tsx`**
+- [x] כפתור `refresh` (MaterialCommunityIcons) בכל המסכים
+- [x] מציג `ActivityIndicator` בזמן בדיקה
+- [x] מבוטל (disabled) בזמן פעיל
+
+**`src/components/UpdateModal/index.tsx`**
+- [x] Dialog עם גרסה חדשה + גרסה נוכחית
+- [x] כפתורי ביטול / הורד
+- [x] מציג אחוז הורדה בזמן אמת
+- [x] עטוף ב-`Portal` של react-native-paper
+
+**`src/components/UpdateSnackbars/index.tsx`**
+- [x] "⏳ מחפש עדכונים..." — בזמן בדיקה
+- [x] "✓ אתה מעודכן" — ל-3 שניות (ירוק)
+- [x] "⏳ מוריד... X%" — בזמן הורדה
+- [x] "✓ APK הורד לתיקיית Downloads" — לאחר הורדה מוצלחת (ירוק)
+- [x] "✗ [שגיאה]" + כפתור "נסה שוב" — לשגיאות API/הורדה (אדום)
+
+#### אינטגרציה
+- [x] `App.tsx` — נוסף `<UpdateModal />` ו-`<UpdateSnackbars />` גלובליים
+- [x] `CalculatorScreen` — נוסף `HeaderRefreshButton` לכותרת
+- [x] `TopologyScreen` — נוסף `HeaderRefreshButton` ל-Appbar
+- [x] `CatalogScreen` — נוסף `HeaderRefreshButton` לכותרת
+- [x] `src/strings.ts` — נוסף `S.updates` עם 10 מחרוזות עבריות
+- [x] `AndroidManifest.xml` — נוספו הרשאות `WRITE_EXTERNAL_STORAGE`, `READ_EXTERNAL_STORAGE`, `REQUEST_INSTALL_PACKAGES`
+
+#### RTL
+- [x] כפתור הרענון מופיע בצד שמאל (leading ב-RTL) בכל המסכים
+- [x] כל מחרוזות ה-UI מיושרות לימין
+
+---
+
 ## 📊 Progress Summary
 
 | Phase | Status | Completion |
@@ -133,6 +191,7 @@ All phases complete! 🎉
 | Phase 5 — Validation & StatusBadge | ✅ Complete | 100% |
 | Phase 6 — Catalog Screen | ✅ Complete | 100% |
 | Phase 7 — APK Build | ✅ Complete | 100% |
+| Phase 8 — GitHub Update Checker | ✅ Complete | 100% |
 | **Overall** | **✅ Complete** | **100%** |
 
 ---
@@ -156,6 +215,6 @@ All phases complete! 🎉
 
 ---
 
-**Last Updated:** 2026-04-13  
-**Next Review:** After Phase 7 completion
+**Last Updated:** 2026-04-15  
+**Next Review:** —
 
